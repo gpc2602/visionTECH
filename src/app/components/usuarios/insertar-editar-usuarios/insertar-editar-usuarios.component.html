@@ -1,0 +1,94 @@
+<div class="super-container">
+  <div class="container">
+    <div style="text-align: center; margin: 0 auto">
+      <h1>{{ edicion ? 'Editar Usuario' : 'Registrar Usuario' }}</h1>
+    </div>
+    <div class="form-container" style="text-align: center; margin: 0 auto">
+      <form [formGroup]="form" (ngSubmit)="aceptar()">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Nombre de usuario</mat-label>
+          <input matInput placeholder="Ingrese nombre de usuario" formControlName="username" />
+          <mat-error *ngIf="form.get('username')?.hasError('required')">
+            El nombre de usuario es obligatorio
+          </mat-error>
+          <mat-error *ngIf="form.get('username')?.hasError('minlength')">
+            El nombre de usuario debe tener al menos 3 caracteres
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <!-- Solo mostrar password en modo inserción -->
+        <mat-form-field class="example-full-width" appearance="outline" *ngIf="!edicion">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            type="password"
+            placeholder="Ingrese contraseña"
+            formControlName="password"
+          />
+          <mat-error *ngIf="form.get('password')?.hasError('required')">
+            La contraseña es obligatoria
+          </mat-error>
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+            La contraseña debe tener al menos 6 caracteres
+          </mat-error>
+        </mat-form-field>
+        <br *ngIf="!edicion" />
+
+        <div style="margin: 20px 0;">
+          <label style="display: block; margin-bottom: 10px; font-weight: 500; color: #333;">Estado del usuario</label>
+          <mat-radio-group formControlName="enabled">
+            <mat-radio-button [value]="true">Habilitado</mat-radio-button>
+            <mat-radio-button [value]="false">Deshabilitado</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <br />
+
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput placeholder="ejemplo@correo.com" formControlName="correo" type="email" />
+          <mat-error *ngIf="form.get('correo')?.hasError('required')">
+            El correo electrónico es obligatorio
+          </mat-error>
+          <mat-error *ngIf="form.get('correo')?.hasError('email')">
+            Ingrese un correo electrónico válido
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput placeholder="999999999" formControlName="telefono" />
+          <mat-error *ngIf="form.get('telefono')?.hasError('required')">
+            El teléfono es obligatorio
+          </mat-error>
+          <mat-error *ngIf="form.get('telefono')?.hasError('pattern')">
+            El teléfono debe tener entre 9 y 15 dígitos
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Nombre completo</mat-label>
+          <input matInput placeholder="Ingrese nombre completo" formControlName="nombre" />
+          <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+            El nombre es obligatorio
+          </mat-error>
+          <mat-error *ngIf="form.get('nombre')?.hasError('minlength')">
+            El nombre debe tener al menos 2 caracteres
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <div class="button-container" style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+          <button type="button" mat-raised-button color="warn" (click)="cancelar()">
+            Cancelar
+          </button>
+          <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">
+            {{ edicion ? 'Actualizar' : 'Registrar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

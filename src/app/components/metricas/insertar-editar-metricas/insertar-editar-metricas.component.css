@@ -1,0 +1,129 @@
+.super-container {
+  background: linear-gradient(135deg, #3f5ad6 0%, #764ba2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 64px);
+}
+
+.container {
+  max-width: 1400px;
+  padding: 60px 20px 60px 20px;
+}
+
+/* ===== TÍTULOS ===== */
+h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 2rem 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  margin: 10px auto;
+  border-radius: 2px;
+}
+
+/* ===== FORM CONTAINER ===== */
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ===== FORM FIELDS ===== */
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+}
+
+/* ===== BUTTONS ===== */
+.button-group {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.mat-mdc-raised-button {
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.mat-mdc-raised-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  color: white;
+}
+
+.mat-mdc-raised-button.mat-warn {
+  background: linear-gradient(45deg, #e74c3c, #c0392b);
+  color: white;
+}
+
+.mat-mdc-raised-button:disabled {
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .mat-mdc-raised-button {
+    width: 100%;
+    max-width: 200px;
+  }
+}

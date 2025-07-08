@@ -1,0 +1,237 @@
+<mat-toolbar class="custom-toolbar">
+  <!-- Botón hamburguesa -->
+  <button mat-icon-button class="menu-toggle" (click)="toggleMenu()">
+    <mat-icon>{{ isMenuOpen ? "close" : "menu" }}</mat-icon>
+  </button>
+
+  <!-- Logo/Título centrado -->
+  <div class="logo-container">
+    <span class="logo-text">VISION TECH</span>
+  </div>
+
+  <!-- Botón de usuario a la derecha -->
+  <div class="user-menu">
+    <button mat-icon-button [matMenuTriggerFor]="menuSalir" class="user-button">
+      <mat-icon>person</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<!-- Menú desplegable lateral -->
+<div class="side-menu" [class.open]="isMenuOpen">
+  <div class="side-menu-content">
+    <!-- Header del menú -->
+    <div class="menu-header">
+      <h2>Menú Principal</h2>
+      <button mat-icon-button (click)="closeMenu()" class="close-menu">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Enlaces del menú -->
+    <nav class="menu-nav">
+      <!-- Home -->
+      <a mat-button [routerLink]="['/homes']" class="menu-item" (click)="closeMenu()">
+        <div class="menu-item-content">
+          <mat-icon>home</mat-icon>
+          <span>Home</span>
+        </div>
+      </a>
+
+      <!-- Roles (solo para ADMIN) -->
+      <div class="menu-section" *ngIf="isAdmin()">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('roles', $event)">
+          <div class="menu-item-content">
+            <mat-icon>apps</mat-icon>
+            <span>Roles</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['roles']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['roles']">
+          <a mat-button routerLink="/roles" class="submenu-item" (click)="closeMenu()">Listar</a>
+          <a mat-button routerLink="/roles/inserciones" class="submenu-item" (click)="closeMenu()">Registrar</a>
+        </div>
+      </div>
+
+      <!-- Usuarios (solo para ADMIN) -->
+      <div class="menu-section" *ngIf="isAdmin()">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('usuarios', $event)">
+          <div class="menu-item-content">
+            <mat-icon>people</mat-icon>
+            <span>Usuarios</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['usuarios']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['usuarios']">
+          <a mat-button routerLink="/usuarios" class="submenu-item" (click)="closeMenu()">Listar</a>
+          <a mat-button routerLink="/usuarios/inserciones" class="submenu-item" (click)="closeMenu()">Registrar</a>
+        </div>
+      </div>
+
+      <!-- Rutas (solo para ADMIN) -->
+      <div class="menu-section" *ngIf="isAdmin()">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('rutas', $event)">
+          <div class="menu-item-content">
+            <mat-icon>route</mat-icon>
+            <span>Rutas</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['rutas']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['rutas']">
+          <a mat-button routerLink="/rutas" class="submenu-item" (click)="closeMenu()">Listar</a>
+          <a mat-button routerLink="/rutas/inserciones" class="submenu-item" (click)="closeMenu()">Registrar</a>
+          <a mat-button routerLink="/rutas/mapa" class="submenu-item" (click)="closeMenu()">Ver Mapa</a>
+        </div>
+      </div>
+
+      <!-- Mapa -->
+      <a mat-button routerLink="/mapa" class="menu-item" (click)="closeMenu()">
+        <div class="menu-item-content">
+          <mat-icon>map</mat-icon>
+          <span>Mapa</span>
+        </div>
+      </a>
+
+      <!-- Temas del Foro -->
+      <div class="menu-section">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('temaforo', $event)">
+          <div class="menu-item-content">
+            <mat-icon>forum</mat-icon>
+            <span>Temas Foro</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['temaforo']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['temaforo']">
+          <a mat-button routerLink="/temaforo" class="submenu-item" (click)="closeMenu()">Listar</a>
+          <a mat-button routerLink="/temaforo/inserciones" class="submenu-item" (click)="closeMenu()">Registrar</a>
+        </div>
+      </div>
+
+      <!-- Respuestas del Foro -->
+      <div class="menu-section">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('respuesta', $event)">
+          <div class="menu-item-content">
+            <mat-icon>question_answer</mat-icon>
+            <span>Respuestas</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['respuesta']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['respuesta']">
+          <a mat-button routerLink="/respuesta" class="submenu-item" (click)="closeMenu()">Listar</a>
+          <a mat-button routerLink="/respuesta/inserciones" class="submenu-item" (click)="closeMenu()">Registrar</a>
+        </div>
+      </div>
+
+      <!-- Métricas -->
+      <div class="menu-section">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('metricas', $event)">
+          <div class="menu-item-content">
+            <mat-icon>analytics</mat-icon>
+            <span>Métricas</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['metricas']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['metricas']">
+          <a mat-button routerLink="/metricas" class="submenu-item" (click)="closeMenu()">Listar</a>
+          <a mat-button routerLink="/metricas/inserciones" class="submenu-item" (click)="closeMenu()">Registrar</a>
+        </div>
+      </div>
+
+      <!-- Condiciones Atmosféricas -->
+      <div class="menu-section">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('atmosfericas', $event)">
+          <div class="menu-item-content">
+            <mat-icon>cloud</mat-icon>
+            <span>Condiciones Atmosféricas</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['atmosfericas']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['atmosfericas']">
+          <a mat-button routerLink="/catmosferica" class="submenu-item" (click)="closeMenu()">Listar</a>
+          <a mat-button routerLink="/catmosferica/inserciones" class="submenu-item" (click)="closeMenu()">Registrar</a>
+        </div>
+      </div>
+
+      <!-- Incidentes -->
+      <div class="menu-section">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('incidentes', $event)">
+          <div class="menu-item-content">
+            <mat-icon>warning</mat-icon>
+            <span>Incidentes</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['incidentes']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['incidentes']">
+          <a mat-button routerLink="/incidentes" class="submenu-item" (click)="closeMenu()">Listar</a>
+          <a mat-button routerLink="/incidentes/inserciones" class="submenu-item" (click)="closeMenu()">Registrar</a>
+        </div>
+      </div>
+
+      <!-- Recomendaciones -->
+      <div class="menu-section">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('recomendaciones', $event)">
+          <div class="menu-item-content">
+            <mat-icon>lightbulb</mat-icon>
+            <span>Recomendaciones</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['recomendaciones']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['recomendaciones']">
+          <a mat-button routerLink="/recomendaciones" class="submenu-item" (click)="closeMenu()">Listar</a>
+          <a mat-button routerLink="/recomendaciones/inserciones" class="submenu-item" (click)="closeMenu()">Registrar</a>
+        </div>
+      </div>
+
+      <!-- Contactos de Emergencia -->
+      <div class="menu-section">
+        <button mat-button class="menu-item expandable" (click)="toggleSubmenu('emergencia', $event)">
+          <div class="menu-item-content">
+            <mat-icon>emergency</mat-icon>
+            <span>Contactos de Emergencia</span>
+          </div>
+          <mat-icon class="expand-icon" [class.rotated]="openSubmenus['emergencia']">expand_more</mat-icon>
+        </button>
+        <div class="submenu" [class.open]="openSubmenus['emergencia']">
+          <a mat-button routerLink="/contactoemergencia" class="submenu-item" (click)="closeMenu()">Listar</a>
+        </div>
+      </div>
+
+      <!-- Reportes -->
+      <a mat-button routerLink="/reportes" class="menu-item" (click)="closeMenu()">
+        <div class="menu-item-content">
+          <mat-icon>assessment</mat-icon>
+          <span>Reportes</span>
+        </div>
+      </a>
+    </nav>
+
+    <!-- Footer del menú -->
+    <div class="menu-footer">
+      <div class="user-info">
+        <mat-icon>person</mat-icon>
+        <span>Rol: {{ formatRol(rol) || "No definido" }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay para cerrar el menú -->
+<div class="menu-overlay" [class.open]="isMenuOpen" (click)="closeMenu()"></div>
+
+<!-- Menú de usuario -->
+<mat-menu #menuSalir="matMenu" class="user-dropdown-menu">
+  <div class="user-menu-header">
+    <mat-icon class="user-avatar">account_circle</mat-icon>
+    <div class="user-details">
+      <span class="user-role">{{ formatRol(rol) || "No definido" }}</span>
+      <span class="user-label">Sesión activa</span>
+    </div>
+  </div>
+  
+  <mat-divider></mat-divider>
+  
+  <button mat-menu-item class="logout-item" (click)="cerrar()">
+    <mat-icon class="logout-icon">logout</mat-icon>
+    <span>Cerrar sesión</span>
+  </button>
+</mat-menu>

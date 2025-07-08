@@ -1,0 +1,156 @@
+<div class="super-container">
+  <div class="container">
+    <div style="text-align: center; margin: 0 auto">
+      <h1>{{ edicion ? 'Editar Ruta' : 'Registrar Ruta' }}</h1>
+    </div>
+    <div class="form-container" style="text-align: center; margin: 0 auto">
+      <form [formGroup]="form" (ngSubmit)="aceptar()">
+        
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Nombre de la ruta</mat-label>
+          <input matInput 
+                 placeholder="Ej: Ruta Centro - Universidad" 
+                 formControlName="nombre" 
+                 maxlength="100" />
+          <mat-error *ngIf="hasFieldError('nombre')">
+            {{ getFieldError('nombre') }}
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Destino</mat-label>
+          <input matInput 
+                 placeholder="Ej: Universidad Nacional Mayor de San Marcos" 
+                 formControlName="destino" 
+                 maxlength="100" />
+          <mat-error *ngIf="hasFieldError('destino')">
+            {{ getFieldError('destino') }}
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Punto de inicio</mat-label>
+          <input matInput 
+                 placeholder="Ej: Plaza de Armas de Lima" 
+                 formControlName="inicio" 
+                 maxlength="100" />
+          <mat-error *ngIf="hasFieldError('inicio')">
+            {{ getFieldError('inicio') }}
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <div class="form-row">
+          <mat-form-field class="half-width" appearance="outline">
+            <mat-label>Distancia (metros)</mat-label>
+            <input matInput 
+                   placeholder="Ej: 1500.5" 
+                   type="number" 
+                   step="0.1"
+                   min="0.1"
+                   formControlName="distancia" />
+            <mat-error *ngIf="hasFieldError('distancia')">
+              {{ getFieldError('distancia') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="half-width" appearance="outline">
+            <mat-label>Tiempo estimado (minutos)</mat-label>
+            <input matInput 
+                   placeholder="Ej: 25.5" 
+                   type="number" 
+                   step="0.1"
+                   min="0.1"
+                   formControlName="tiempo" />
+            <mat-error *ngIf="hasFieldError('tiempo')">
+              {{ getFieldError('tiempo') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <br />
+
+        <div class="form-row">
+          <mat-form-field class="half-width" appearance="outline">
+            <mat-label>Longitud</mat-label>
+            <input matInput 
+                   placeholder="Ej: -77.0428" 
+                   type="number" 
+                   step="any"
+                   min="-180"
+                   max="180"
+                   formControlName="longitud" />
+            <mat-error *ngIf="hasFieldError('longitud')">
+              {{ getFieldError('longitud') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="half-width" appearance="outline">
+            <mat-label>Latitud</mat-label>
+            <input matInput 
+                   placeholder="Ej: -12.0464" 
+                   type="number" 
+                   step="any"
+                   min="-90"
+                   max="90"
+                   formControlName="latitud" />
+            <mat-error *ngIf="hasFieldError('latitud')">
+              {{ getFieldError('latitud') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <br />
+
+        <div class="radio-section">
+          <label class="radio-label">¿Es ruta favorita?</label>
+          <mat-radio-group formControlName="favorito">
+            <mat-radio-button [value]="true">
+              <mat-icon>favorite</mat-icon>
+              Sí, es favorita
+            </mat-radio-button>
+            <mat-radio-button [value]="false">
+              <mat-icon>favorite_border</mat-icon>
+              No es favorita
+            </mat-radio-button>
+          </mat-radio-group>
+          <mat-error *ngIf="hasFieldError('favorito')" class="radio-error">
+            {{ getFieldError('favorito') }}
+          </mat-error>
+        </div>
+
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Usuario asignado</mat-label>
+          <mat-select formControlName="usuario">
+            @for (usuario of listaUsuarios; track usuario.idUsuario) {
+              <mat-option [value]="usuario.idUsuario">
+                <div class="user-option">
+                  <mat-icon>person</mat-icon>
+                  <span>{{ usuario.username }}</span>
+                </div>
+              </mat-option>
+            }
+          </mat-select>
+          <mat-hint *ngIf="!isAdmin() && !edicion">
+            Se ha seleccionado automáticamente su usuario
+          </mat-hint>
+          <mat-hint *ngIf="!isAdmin() && edicion">
+            Solo los administradores pueden cambiar el usuario asignado
+          </mat-hint>
+          <mat-error *ngIf="hasFieldError('usuario')">
+            {{ getFieldError('usuario') }}
+          </mat-error>
+        </mat-form-field>
+
+        <div class="button-container" style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+          <button type="button" mat-raised-button color="warn" (click)="cancelar()">
+            Cancelar
+          </button>
+          <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid || (edicion && !canEditRuta())">
+            {{ edicion ? 'Actualizar' : 'Registrar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

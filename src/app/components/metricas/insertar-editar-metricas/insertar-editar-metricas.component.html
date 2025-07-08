@@ -1,0 +1,66 @@
+<div class="super-container">
+  <div class="container">
+    <div style="text-align: center; margin: 0 auto">
+      <h1>{{ edicion ? 'Actualizar Métrica' : 'Registro de Métrica' }}</h1>
+    </div>
+    <div class="form-container" style="text-align: center; margin: 0 auto">
+      <form [formGroup]="form" (submit)="aceptar()">
+        <mat-form-field class="full-width">
+          <mat-label>Número de Pasos</mat-label>
+          <input matInput placeholder="12000" formControlName="numeroPasos" type="number">
+          <mat-error *ngIf="form.get('numeroPasos')?.hasError('required')">
+            El número de pasos es obligatorio!
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Calorías Quemadas</mat-label>
+          <input matInput placeholder="300" formControlName="caloriasQuemadas" type="number">
+          <mat-error *ngIf="form.get('caloriasQuemadas')?.hasError('required')">
+            El número de calorías es obligatorio!
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Tiempo Efectivo (minutos)</mat-label>
+          <input matInput placeholder="45" formControlName="tiempoEfectivoMinutos" type="number">
+          <mat-error *ngIf="form.get('tiempoEfectivoMinutos')?.hasError('required')">
+            El tiempo en minutos es obligatorio!
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Fecha de Registro</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="fecha">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('fecha')?.hasError('required')">
+            La fecha de registro es obligatoria!
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Seleccione la Ruta</mat-label>
+          <mat-select formControlName="idRuta">
+            @for (ruta of listaRutas; track ruta) {
+            <mat-option [value]="ruta.idRuta">{{ ruta.nombreRuta }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="form.get('idRuta')?.hasError('required')">
+            La ruta es obligatoria!
+          </mat-error>
+        </mat-form-field>
+
+        <div class="button-group">
+          <button mat-raised-button color="primary" (click)="aceptar()">
+            {{ edicion ? 'Actualizar' : 'Registrar' }}
+          </button>
+          <button mat-raised-button color="warn" (click)="cancelar()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

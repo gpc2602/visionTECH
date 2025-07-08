@@ -1,0 +1,63 @@
+<div class="super-container">
+  <div class="container">
+    <div style="text-align: center; margin: 0 auto">
+      <h1>
+        {{
+          edicion ? "Actualizar Recomendación" : "Registrar Nueva Recomendación"
+        }}
+      </h1>
+    </div>
+    <div class="form-container" style="text-align: center; margin: 0 auto">
+      <form [formGroup]="form" (submit)="aceptar()">
+        
+        <mat-form-field class="example-full-width">
+          <mat-label>Comentario</mat-label>
+          <input
+            matInput
+            placeholder="Ingrese su comentario sobre la ruta"
+            formControlName="comentario"
+          />
+          <mat-error *ngIf="form.get('comentario')?.hasError('required')">
+            El comentario es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field>
+          <mat-label>Puntuación</mat-label>
+          <mat-select formControlName="puntuacion">
+            @for (puntuacion of pcTiposPuntuacion; track puntuacion) {
+            <mat-option [value]="puntuacion.value">{{
+              puntuacion.viewValue
+            }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="form.get('puntuacion')?.hasError('required')">
+            La puntuación es obligatoria
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field>
+          <mat-label>Seleccione la ruta</mat-label>
+          <mat-select formControlName="ruta">
+            @for (ruta of listaRutas; track ruta) {
+            <mat-option [value]="ruta.idRuta">{{ ruta.nombreRuta }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="form.get('ruta')?.hasError('required')">
+            La ruta es obligatoria
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <button mat-raised-button color="primary" (click)="aceptar()">
+          {{ edicion ? "Actualizar" : "Registrar" }}
+        </button>
+        <button mat-raised-button color="warn" (click)="cancelar()">
+          Cancelar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="super-container">
+  <div class="container">
+    <div style="text-align: center; margin: 0 auto">
+      <h1>{{ edicion ? "Actualizar Respuesta" : "Registrar Respuesta" }}</h1>
+    </div>
+
+    <div class="form-container">
+      <form [formGroup]="form" (ngSubmit)="aceptar()">
+        <mat-form-field class="full-width">
+          <mat-label>Respuesta</mat-label>
+          <input
+            matInput
+            placeholder="Ingrese su respuesta"
+            formControlName="respuesta"
+          />
+          <mat-error *ngIf="form.get('respuesta')?.hasError('required')">
+            La respuesta es obligatoria
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Fecha de Respuesta</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="fechaRespuesta"
+          />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('fechaRespuesta')?.hasError('required')">
+            La fecha es obligatoria
+          </mat-error>
+          <mat-error
+            *ngIf="form.get('fechaRespuesta')?.hasError('fechaInvalida')"
+          >
+            La fecha no puede ser mayor a la fecha actual
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Seleccione el Tema del Foro</mat-label>
+          <mat-select formControlName="idTema">
+            @for (tema of listaTemasForo; track tema.idTema) {
+            <mat-option [value]="tema.idTema">{{ tema.tituloTema }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="form.get('idTema')?.hasError('required')">
+            El tema es obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <div class="button-group">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!form.valid"
+          >
+            {{ edicion ? "Actualizar" : "Registrar" }}
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="cancelar()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

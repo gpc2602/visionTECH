@@ -1,0 +1,94 @@
+<div class="super-container">
+  <div class="container">
+    <div style="text-align: center; margin: 0 auto">
+      <h1>Lista de Respuestas</h1>
+      <p>Cantidad de respuestas: {{ pcCantidadRegistros }}</p>
+      <button mat-raised-button color="primary" [routerLink]="['inserciones']">
+        <mat-icon>add</mat-icon>
+        Nueva Respuesta
+      </button>
+    </div>
+    <div class="table-container">
+      <mat-form-field>
+        <mat-label>Filtrar</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Buscar respuestas..."
+          #input
+        />
+      </mat-form-field>
+
+      <mat-paginator
+        [pageSizeOptions]="pcPageSizeOptions"
+        [pageSize]="10"
+        showFirstLastButtons
+        aria-label="Select page"
+      >
+      </mat-paginator>
+
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="c1">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.idRespuesta }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="c2">
+          <th mat-header-cell *matHeaderCellDef>Respuesta</th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              element.respuesta.length > 50
+                ? element.respuesta.substring(0, 50) + "..."
+                : element.respuesta
+            }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="c3">
+          <th mat-header-cell *matHeaderCellDef>Fecha Respuesta</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.fechaRespuesta | date : "dd/MM/yyyy" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="c4">
+          <th mat-header-cell *matHeaderCellDef>Título del Tema</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.temaForo?.tituloTema || "N/A" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="c5">
+          <th mat-header-cell *matHeaderCellDef>Actualizar</th>
+          <td mat-cell *matCellDef="let element">
+            <button 
+              matButton 
+              [routerLink]="['ediciones', element.idRespuesta]"
+              class="action-button edit-button"
+              matTooltip="Editar respuesta"
+            >
+              <mat-icon fontIcon="edit"></mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="c6">
+          <th mat-header-cell *matHeaderCellDef>Eliminar</th>
+          <td mat-cell *matCellDef="let element">
+            <button 
+              matButton 
+              (click)="eliminar(element.idRespuesta)"
+              class="action-button delete-button"
+              matTooltip="Eliminar respuesta"
+            >
+              <mat-icon fontIcon="delete_forever"></mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<!-- Simple formulario de login - sin condicionales innecesarios -->
+<div class="login-page">
+  <div class="login-container" style="text-align: center">
+    <div>
+      <img src="assets/visiontechlogo.png" alt="Logo" />
+    </div>
+    <h2>Inicie sesión</h2>
+    <mat-form-field class="example-full-width">
+      <mat-label>Usuario</mat-label>
+      <input matInput placeholder="Username" [(ngModel)]="username" />
+    </mat-form-field>
+    <br />
+    <mat-form-field class="example-full-width">
+      <mat-label>Password</mat-label>
+      <input
+        type="password"
+        matInput
+        placeholder="Password"
+        [(ngModel)]="password"
+      />
+    </mat-form-field>
+    <br />
+    <button mat-raised-button class="custom-button" (click)="login()">
+      Ingresar
+    </button>
+  </div>
+</div>

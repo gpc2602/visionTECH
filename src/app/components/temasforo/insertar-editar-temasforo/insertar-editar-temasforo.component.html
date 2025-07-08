@@ -1,0 +1,78 @@
+<div class="super-container">
+  <div class="container">
+    <div style="text-align: center; margin: 0 auto">
+      <h1>{{ edicion ? "Actualizar Tema del Foro" : "Crear Nuevo Tema" }}</h1>
+    </div>
+
+    <div class="form-container" style="max-width: 600px; margin: 0 auto">
+      <form [formGroup]="form" (ngSubmit)="aceptar()">
+        <mat-form-field
+          class="example-full-width"
+          style="width: 100%; margin-bottom: 20px"
+        >
+          <mat-label>Título del Tema</mat-label>
+          <input
+            matInput
+            placeholder="Ingrese un título descriptivo"
+            formControlName="tituloTema"
+          />
+          <mat-error *ngIf="form.get('tituloTema')?.hasError('required')">
+            El título es obligatorio
+          </mat-error>
+          <mat-error *ngIf="form.get('tituloTema')?.hasError('minlength')">
+            El título debe tener al menos 5 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field
+          class="example-full-width"
+          style="width: 100%; margin-bottom: 20px"
+        >
+          <mat-label>Comentario</mat-label>
+          <textarea
+            matInput
+            rows="4"
+            placeholder="Describa su tema o pregunta..."
+            formControlName="comentario"
+          >
+          </textarea>
+          <mat-error *ngIf="form.get('comentario')?.hasError('required')">
+            El comentario es obligatorio
+          </mat-error>
+          <mat-error *ngIf="form.get('comentario')?.hasError('minlength')">
+            El comentario debe tener al menos 10 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <div style="margin-bottom: 20px">
+          <mat-checkbox formControlName="estadoCerrado">
+            Marcar como cerrado (no permite más respuestas)
+          </mat-checkbox>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!form.valid"
+            style="margin-right: 10px"
+          >
+            <mat-icon>{{ edicion ? "update" : "add" }}</mat-icon>
+            {{ edicion ? "Actualizar" : "Crear Tema" }}
+          </button>
+
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="cancelar()"
+          >
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

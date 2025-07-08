@@ -1,0 +1,54 @@
+/* You can add global styles to this file, and also import other style files */
+
+html {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-mdc-form-field-bottom-align {
+  display: none !important;
+}
+
+.roles-container .mat-mdc-chip-action-label {
+  color: rgb(82, 82, 82) !important;
+}
+
+.mat-internal-form-field > label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== ESTILOS PARA SNACKBAR DE ERRORES LARGOS ===== */
+.mat-mdc-snack-bar-container {
+  max-width: 600px !important;
+  min-width: 300px !important;
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-snack-bar-label {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  max-width: 100% !important;
+}
+
+/* Estilos específicos para diferentes tipos de snackbar */
+.error-snackbar .mat-mdc-snack-bar-container {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-container {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.warning-snackbar .mat-mdc-snack-bar-container {
+  background-color: #ff9800 !important;
+  color: white !important;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

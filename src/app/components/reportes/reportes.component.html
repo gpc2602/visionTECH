@@ -1,0 +1,146 @@
+<div class="super-container">
+  <div class="container">
+    <h1>Reportes y Estadísticas</h1>
+    <p class="subtitle">Análisis general del sistema de rutas y usuarios</p>
+
+    <div *ngIf="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Cargando reportes...</p>
+    </div>
+
+    <div *ngIf="error" class="error-container">
+      <div class="error-message">
+        <mat-icon>error</mat-icon>
+        <p>{{ error }}</p>
+        <button mat-raised-button color="primary" (click)="cargarReporte()">
+          Reintentar
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && !error" class="reportes-content">
+      
+      <div class="resumen-section">
+        <h2>Resumen General</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <mat-icon>people</mat-icon>
+            </div>
+            <div class="stat-content">
+              <h3>{{ reporteData.resumenTextual.totalUsuarios }}</h3>
+              <p>Total Usuarios</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <mat-icon>route</mat-icon>
+            </div>
+            <div class="stat-content">
+              <h3>{{ reporteData.resumenTextual.totalRutas }}</h3>
+              <p>Total Rutas</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <mat-icon>warning</mat-icon>
+            </div>
+            <div class="stat-content">
+              <h3>{{ reporteData.resumenTextual.totalIncidentes }}</h3>
+              <p>Total Incidentes</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <mat-icon>directions_walk</mat-icon>
+            </div>
+            <div class="stat-content">
+              <h3>{{ reporteData.resumenTextual.totalPasos | number }}</h3>
+              <p>Total Pasos</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <mat-icon>local_fire_department</mat-icon>
+            </div>
+            <div class="stat-content">
+              <h3>{{ reporteData.resumenTextual.totalCalorias | number }}</h3>
+              <p>Total Calorías</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <mat-icon>thermostat</mat-icon>
+            </div>
+            <div class="stat-content">
+              <h3>{{ reporteData.resumenTextual.promedioTemperatura | number:'1.1-1' }}°C</h3>
+              <p>Temp. Promedio</p>
+            </div>
+          </div>
+
+          <div class="stat-card wide">
+            <div class="stat-icon">
+              <mat-icon>star</mat-icon>
+            </div>
+            <div class="stat-content">
+              <h3>{{ reporteData.resumenTextual.rutaMasUsada }}</h3>
+              <p>Ruta Más Usada</p>
+            </div>
+          </div>
+
+          <div class="stat-card wide">
+            <div class="stat-icon">
+              <mat-icon>priority_high</mat-icon>
+            </div>
+            <div class="stat-content">
+              <h3>{{ reporteData.resumenTextual.tipoIncidenteMasFrecuente }}</h3>
+              <p>Tipo Incidente Más Frecuente</p>
+            </div>
+          </div>
+
+          <div class="stat-card wide">
+            <div class="stat-icon">
+              <mat-icon>analytics</mat-icon>
+            </div>
+            <div class="stat-content">
+              <h3>{{ reporteData.resumenTextual.totalMetricas }}</h3>
+              <p>Total Métricas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="graficos-section">
+        <h2>Análisis Visual</h2>
+        
+        <div class="charts-container">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Actividad de Usuarios</h3>
+              <p>Evolución mensual de usuarios activos</p>
+            </div>
+            <div class="chart-content">
+              <canvas #chartActividad></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Tipos de Incidentes</h3>
+              <p>Distribución por categoría</p>
+            </div>
+            <div class="chart-content">
+              <canvas #chartIncidentes></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="super-container">
+  <div class="container">
+    <div style="text-align: center; margin: 0 auto">
+      <h1>{{ edicion ? "Actualización de Incidente" : "Registro de Incidente" }}</h1>
+    </div>
+    <div class="form-container" style="text-align: center; margin: 0 auto">
+      <form [formGroup]="form" (ngSubmit)="aceptar()">
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Tipo de incidente</mat-label>
+          <input
+            matInput
+            placeholder="Choque de carros"
+            formControlName="tipo"
+          />
+          <mat-error *ngIf="form.get('tipo')?.hasError('required')">
+            El tipo es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Descripción de incidente</mat-label>
+          <input
+            matInput
+            placeholder="Descripción detallada del incidente"
+            formControlName="descripcion"
+          />
+          <mat-error *ngIf="form.get('descripcion')?.hasError('required')">
+            La descripción es obligatoria
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field>
+          <mat-label>Gravedad</mat-label>
+          <mat-select formControlName="gravedad">
+            @for (food of pcTipos; track food) {
+            <mat-option [value]="food.value">{{ food.viewValue }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="form.get('gravedad')?.hasError('required')">
+            La gravedad es obligatoria
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field>
+          <mat-label>Seleccione la ruta</mat-label>
+          <mat-select formControlName="ruta">
+            @for (food of listaRutas; track food) {
+            <mat-option [value]="food.idRuta">{{ food.nombreRuta }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="form.get('ruta')?.hasError('required')">
+            La ruta es obligatoria
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <button 
+          class="btn-left" 
+          mat-raised-button 
+          color="primary" 
+          type="submit"
+          [disabled]="form.invalid || enviando">
+          {{ enviando ? 'Procesando...' : (edicion ? "Actualizar" : "Registrar") }}
+        </button>
+        <button 
+          mat-raised-button 
+          color="warn" 
+          type="button" 
+          (click)="cancelar()"
+          [disabled]="enviando">
+          Cancelar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

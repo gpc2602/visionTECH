@@ -1,0 +1,162 @@
+<google-map
+  [center]="center"
+  [zoom]="zoom"
+  height="100vh"
+  width="100%"
+  [ngClass]="{ 'selecting-destination': seleccionandoDestino }"
+  (mapClick)="onMapClick($event)"
+>
+  <!-- Marcador temporal para la nueva ruta -->
+  <map-marker
+    *ngIf="nuevaPosicion"
+    [position]="nuevaPosicion"
+    label="Nuevo"
+  ></map-marker>
+
+  <!-- Marcador para el destino -->
+  <map-marker
+    *ngIf="destinoPosicion"
+    [position]="destinoPosicion"
+    label="Destino"
+  ></map-marker>
+
+  <!-- Marcadores de rutas existentes -->
+  <map-marker
+    *ngFor="let m of marcadores; let i = index"
+    [position]="{ lat: m.lat, lng: m.lng }"
+    [label]="m.label || ''"
+    (mapClick)="openInfo(m, $event)"
+    #marker
+  ></map-marker>
+
+  <map-info-window #infoWindow [innerHTML]="selectedInfo"></map-info-window>
+</google-map>
+
+<div
+  *ngIf="nuevaPosicion && !seleccionandoDestino"
+  class="overlay"
+  (click)="cancelarRegistro()"
+></div>
+
+<div *ngIf="nuevaPosicion && !seleccionandoDestino" class="form-panel">
+  <h3>Registrar Nueva Ruta</h3>
+  <form [formGroup]="rutaForm" (ngSubmit)="registrarRuta()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre de la ruta</mat-label>
+      <input
+        matInput
+        formControlName="nombreRuta"
+        placeholder="Ingrese el nombre de la ruta"
+      />
+      <mat-error *ngIf="rutaForm.get('nombreRuta')?.hasError('required')">
+        El nombre es requerido
+      </mat-error>
+      <mat-error *ngIf="rutaForm.get('nombreRuta')?.hasError('minlength')">
+        El nombre debe tener al menos 3 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Punto de inicio</mat-label>
+      <input
+        matInput
+        formControlName="inicio"
+        placeholder="Seleccione un punto en el mapa o escriba la dirección"
+      />
+      <mat-error *ngIf="rutaForm.get('inicio')?.hasError('required')">
+        El punto de inicio es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <div class="destino-container">
+      <mat-form-field appearance="outline" class="destino-field">
+        <mat-label>Punto de destino</mat-label>
+        <input
+          matInput
+          formControlName="destino"
+          placeholder="Seleccione destino o escriba la dirección"
+        />
+        <mat-error *ngIf="rutaForm.get('destino')?.hasError('required')">
+          El punto de destino es requerido
+        </mat-error>
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="seleccionarDestino()"
+        class="destino-button"
+      >
+        <mat-icon>add_location</mat-icon>
+      </button>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Distancia (metros)</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="distanciaMetros"
+        placeholder="0"
+      />
+      <mat-error *ngIf="rutaForm.get('distanciaMetros')?.hasError('required')">
+        La distancia es requerida
+      </mat-error>
+      <mat-error *ngIf="rutaForm.get('distanciaMetros')?.hasError('min')">
+        La distancia debe ser mayor a 0
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tiempo estimado (minutos)</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="tiempoRuta"
+        placeholder="0"
+      />
+      <mat-error *ngIf="rutaForm.get('tiempoRuta')?.hasError('required')">
+        El tiempo es requerido
+      </mat-error>
+      <mat-error *ngIf="rutaForm.get('tiempoRuta')?.hasError('min')">
+        El tiempo debe ser mayor a 0
+      </mat-error>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!rutaForm.valid"
+      >
+        Registrar
+      </button>
+      <button mat-raised-button type="button" (click)="cancelarRegistro()">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="mostrarAlerta" class="alert-success">
+  ✅ Ruta registrada exitosamente
+</div>
+
+<div *ngIf="seleccionandoDestino" class="alert-info">
+  📍 Selecciona un punto en el mapa para el destino
+</div>
+
+<!-- Indicador de reproducción de voz -->
+<div *ngIf="reproduciendo" class="alert-voice">
+  <mat-icon class="voice-icon">volume_up</mat-icon>
+  {{ mensajeVoz }}
+  <button mat-icon-button (click)="detenerVoz()" class="stop-voice-btn">
+    <mat-icon>volume_off</mat-icon>
+  </button>
+</div>
+
+<!-- Indicador de anuncio de ubicación -->
+<div *ngIf="mensajeVoz && !reproduciendo" class="location-announcement">
+  <mat-icon>location_on</mat-icon>
+  {{ mensajeVoz }}
+</div>

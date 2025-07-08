@@ -1,0 +1,64 @@
+<div class="super-container">
+  <div class="container">
+    <div style="text-align: center; margin: 0 auto">
+      <h1>
+        {{ edicion ? "Editar Roles de Usuario" : "Asignar Roles a Usuario" }}
+      </h1>
+    </div>
+    <div class="form-container" style="text-align: center; margin: 0 auto">
+      <form [formGroup]="form" (ngSubmit)="aceptar()">
+        <mat-form-field class="example-full-width">
+          <mat-label>Seleccione el usuario</mat-label>
+          <mat-select
+            formControlName="user"
+            (selectionChange)="onUserChange($event)"
+          >
+            @for (usuario of listaUsuarios; track usuario) {
+            <mat-option [value]="usuario.idUsuario"
+              >{{ usuario.username }} - {{ usuario.nombre }}</mat-option
+            >
+            }
+          </mat-select>
+          <mat-error *ngIf="form.get('user')?.hasError('required')">
+            El usuario es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Seleccione los roles</mat-label>
+          <mat-select formControlName="roles" multiple>
+            @for (rol of listaRoles; track rol) {
+            <mat-option [value]="rol.idRol">{{
+              formatRole(rol.rol)
+            }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="form.get('roles')?.hasError('required')">
+            Debe seleccionar al menos un rol
+          </mat-error>
+        </mat-form-field>
+        <br />
+
+        <div class="button-container">
+          <button
+            type="button"
+            mat-raised-button
+            color="warn"
+            (click)="cancelar()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            [disabled]="!isFormValid"
+          >
+            {{ edicion ? "Actualizar" : "Asignar" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
